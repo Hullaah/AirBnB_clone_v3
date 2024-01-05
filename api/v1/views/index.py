@@ -5,7 +5,7 @@ Creates a status view for the flask application
 uses the blueprint defined in __init__
 
 '''
-from flask import Flask, Blueprint, jsonify
+from flask import jsonify
 from api.v1.views import app_views
 from models import storage
 

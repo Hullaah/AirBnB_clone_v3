@@ -120,7 +120,7 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         test_models = [BaseModel(), State(), Place(), BaseModel()]
         FileStorage._FileStorage__objects = {
-            f"{x.__class__.__name__}.{x.id}": x for x in test_models}
+            "{}.{}".format(x.__class__.__name__, x.id): x for x in test_models}
         for x in test_models:
             self.assertEqual(storage.get(x.__class__, x.id), x)
         self.assertIs(storage.get(Amenity, 1), None)

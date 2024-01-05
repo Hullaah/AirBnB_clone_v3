@@ -6,7 +6,7 @@ of the flask app
 
 '''
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask
 from models import storage
 from os import getenv
 

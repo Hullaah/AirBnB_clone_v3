@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 '''
-Creates a status view for my flask application
+
+Creates a status view for the flask application
+uses the blueprint defined in __init__
+
 '''
 from flask import Flask, Blueprint, jsonify
 from api.v1.views import app_views

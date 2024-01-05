@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 '''
-Creates a blueprint for the app views
+
+The init file
+creates a blueprint for the app views
+
 '''
 from flask import Flask, Blueprint
 

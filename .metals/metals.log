@@ -1,0 +1,6 @@
+2024.01.04 23:46:53 INFO  Started: Metals version 1.2.0 in folders '/home/hullaah/Documents/ALX/AirBnB_clone_v3' for client Visual Studio Code 1.85.1.[0m
+2024.01.04 23:46:53 INFO  time: initialize in 0.23s[0m
+2024.01.04 23:47:13 WARN  Build server is not auto-connectable.[0m
+2024.01.04 23:47:13 WARN  no build tool detected in workspace '/home/hullaah/Documents/ALX/AirBnB_clone_v3'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+2024.01.05 00:01:55 INFO  Shutting down server[0m
+2024.01.05 00:01:55 INFO  shutting down Metals[0m

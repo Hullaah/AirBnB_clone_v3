@@ -1,40 +1,45 @@
 #!/usr/bin/python3
 """
-The implementation of the states api endpoint
+The implementation of the cities api endpoint
 """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
+from models.city import City
 from models.state import State
 
 
-@app_views.route("/states", strict_slashes=False, methods=["GET", "POST"])
-def states():
-    """view for states endpoint"""
+@app_views.route("/states/<state_id>/cities", strict_slashes=False, methods=["GET", "POST"])
+def cities(state_id):
+    """view for cities endpoint"""
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     if request.method == "GET":
-        return jsonify([x.to_dict() for x in storage.all(State).values()])
+        return jsonify([x.to_dict() for x in state.cities])
     data = request.get_json(silent=True)
     if data is None:
         abort(400, description="Not a JSON")
     if data.get("name") is None:
         abort(400, "Missing name")
-    state = State(**data)
-    storage.new(state)
+    city = City(**data, state_id=state_id)
+    storage.new(city)
+    state.cities.append(city)
     storage.save()
-    return jsonify(state.to_dict()), 201
+    return jsonify({x: y for x, y in city.to_dict().items() if x != 'state'}), 201
 
 
-@app_views.route("/states/<id>", strict_slashes=False,
+@app_views.route("/cities/<id>", strict_slashes=False,
                  methods=["GET", "DELETE", "PUT"])
-def states_with_id(id):
-    """view for states with id endpoint"""
-    state = storage.get(State, id)
-    if state is None:
+def cities_with_id(id):
+    """view for cities with id endpoint"""
+    city = storage.get(City, id)
+    if city is None:
         abort(404)
     if request.method == "GET":
-        return jsonify(state.to_dict())
+        return jsonify(city.to_dict())
     elif request.method == "DELETE":
-        state.delete()
+        city.delete()
         storage.save()
         return jsonify({})
     else:
@@ -46,6 +51,6 @@ def states_with_id(id):
             if field in updates:
                 del updates[field]
         for k, v in updates.items():
-            setattr(state, k, v)
-        state.save()
-        return jsonify(storage.get(State, id).to_dict())
+            setattr(city, k, v)
+        city.save()
+        return jsonify(storage.get(City, id).to_dict())

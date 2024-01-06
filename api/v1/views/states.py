@@ -2,6 +2,7 @@ from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
 from models.state import State
+from sqlalchemy import update
 
 
 @app_views.route("/states", strict_slashes=False, methods=["GET", "POST"])
@@ -15,6 +16,7 @@ def states():
         abort(400, "Missing name")
     state = State(**data)
     storage.new(state)
+    storage.save()
     return jsonify(state.to_dict()), 201
 
 
@@ -37,6 +39,6 @@ def states_with_id(id):
         for field in immutable_fields:
             if field in updates:
                 del updates[field]
-        state.__dict__.update(updates)
-        state.save()
-        return state
+        update(State).where(State.id==id).values(updates)
+        storage.save()
+        return jsonify(storage.get(State, id).to_dict())

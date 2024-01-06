@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+The implementation of the states api endpoint
+"""
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
@@ -7,6 +11,7 @@ from sqlalchemy import update
 
 @app_views.route("/states", strict_slashes=False, methods=["GET", "POST"])
 def states():
+    """view for states endpoint"""
     if request.method == "GET":
         return jsonify([x.to_dict() for x in storage.all(State).values()])
     data = request.get_json(silent=True)
@@ -20,8 +25,10 @@ def states():
     return jsonify(state.to_dict()), 201
 
 
-@app_views.route("/states/<id>", strict_slashes=False, methods=["GET", "DELETE", "PUT"])
+@app_views.route("/states/<id>", strict_slashes=False,
+                 methods=["GET", "DELETE", "PUT"])
 def states_with_id(id):
+    """view for states with id endpoint"""
     state = storage.get(State, id)
     if state is None:
         abort(404)

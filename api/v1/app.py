@@ -22,10 +22,12 @@ def not_found_error(error):
         "error": "Not found"
     }), 404)
 
+
 @app.errorhandler(400)
 def client_error(error):
     """handles client error"""
     return jsonify({"error": error.description}), 400
+
 
 @app.teardown_appcontext
 def teardown(x):

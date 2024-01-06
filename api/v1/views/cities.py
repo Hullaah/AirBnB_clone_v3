@@ -9,7 +9,8 @@ from models.city import City
 from models.state import State
 
 
-@app_views.route("/states/<state_id>/cities", strict_slashes=False, methods=["GET", "POST"])
+@app_views.route("/states/<state_id>/cities", strict_slashes=False,
+                 methods=["GET", "POST"])
 def cities(state_id):
     """view for cities endpoint"""
     state = storage.get(State, state_id)
@@ -26,7 +27,8 @@ def cities(state_id):
     storage.new(city)
     state.cities.append(city)
     storage.save()
-    return jsonify({x: y for x, y in city.to_dict().items() if x != 'state'}), 201
+    return (jsonify({x: y for x, y in city.to_dict().items() if x != 'state'}),
+            201)
 
 
 @app_views.route("/cities/<id>", strict_slashes=False,
@@ -46,7 +48,7 @@ def cities_with_id(id):
         updates = request.get_json(silent=True)
         if updates is None:
             abort(400, description="Not a JSON")
-        immutable_fields = ["id", "created_at", "updated_at"]
+        immutable_fields = ["id", "created_at", "updated_at", "state_id"]
         for field in immutable_fields:
             if field in updates:
                 del updates[field]

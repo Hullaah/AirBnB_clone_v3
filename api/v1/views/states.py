@@ -39,6 +39,6 @@ def states_with_id(id):
         for field in immutable_fields:
             if field in updates:
                 del updates[field]
-        update(State).where(State.id==id).values(updates)
+        state.__dict__.update(updates)
         storage.save()
         return jsonify(storage.get(State, id).to_dict())

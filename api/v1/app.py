@@ -22,6 +22,10 @@ def not_found_error(error):
         "error": "Not found"
     }), 404)
 
+@app.errorhandler(400)
+def client_error(error):
+    """handles client error"""
+    return jsonify({"error": error.description}), 400
 
 @app.teardown_appcontext
 def teardown(x):
@@ -32,4 +36,4 @@ def teardown(x):
 if __name__ == "__main__":
     host = getenv("HBNB_API_HOST", default="0.0.0.0")
     port = int(getenv("HBNB_API_PORT", default=5000))
-    app.run(host=host, port=port, threaded=True)
+    app.run(host=host, port=port, threaded=True, debug=True)

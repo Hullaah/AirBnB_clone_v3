@@ -3,8 +3,9 @@ from flask import jsonify, request, abort
 from models import storage
 from models.state import State
 
-@app_views.route("/states", strict_slashes=False)
-def states(methods=["GET", "POST"]):
+
+@app_views.route("/states", strict_slashes=False, methods=["GET", "POST"])
+def states():
     if request.method == "GET":
         return jsonify([x.to_dict() for x in storage.all(State).values()])
     data = request.get_json(silent=True)
@@ -16,15 +17,17 @@ def states(methods=["GET", "POST"]):
     storage.new(state)
     return jsonify(state.to_dict()), 201
 
-@app_views.route("/states/<id>", strict_slashes=False)
-def states_with_id(id, methods=["GET", "DELETE", "PUT"]):
+
+@app_views.route("/states/<id>", strict_slashes=False, methods=["GET", "DELETE", "PUT"])
+def states_with_id(id):
     state = storage.get(State, id)
-    if not state:
+    if state is None:
         abort(404)
     if request.method == "GET":
         return jsonify(state.to_dict())
     elif request.method == "DELETE":
-        storage.delete(state)
+        state.delete()
+        storage.save()
         return jsonify({})
     else:
         updates = request.get_json(silent=True)
@@ -35,5 +38,5 @@ def states_with_id(id, methods=["GET", "DELETE", "PUT"]):
             if field in updates:
                 del updates[field]
         state.__dict__.update(updates)
-        storage.save()
+        state.save()
         return state

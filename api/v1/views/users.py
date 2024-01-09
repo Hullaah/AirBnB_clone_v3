@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 '''
+
 This is the implementation of the user routes for
 the AirBnB project API
+
 '''
 from api.v1.views import app_views
 from flask import jsonify, request, abort

@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """
-The implementation of the places api endpoint
+
+This module contains the implementation of the places endpoint
+for the AirBnB project
+
 """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
